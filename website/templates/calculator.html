@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <!-- Custom CSS -->
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+        .calculator {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .display {
+            height: 60px;
+            font-size: 1.5rem;
+            text-align: right;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #e9ecef;
+        }
+        .btn {
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <input type="text" class="form-control display" id="display" disabled>
+
+        <div class="row">
+            <div class="col-3 mb-2">
+                <button class="btn btn-danger w-100" onclick="clearDisplay()">C</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-secondary w-100" onclick="appendToDisplay('(')">(</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-secondary w-100" onclick="appendToDisplay(')')">)</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-secondary w-100" onclick="appendToDisplay('/')">/</button>
+            </div>
+
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('7')">7</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('8')">8</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('9')">9</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-secondary w-100" onclick="appendToDisplay('*')">*</button>
+            </div>
+
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('4')">4</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('5')">5</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('6')">6</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-secondary w-100" onclick="appendToDisplay('-')">-</button>
+            </div>
+
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('1')">1</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('2')">2</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('3')">3</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-secondary w-100" onclick="appendToDisplay('+')">+</button>
+            </div>
+
+            <div class="col-6 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('0')">0</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-light w-100" onclick="appendToDisplay('.')">.</button>
+            </div>
+            <div class="col-3 mb-2">
+                <button class="btn btn-primary w-100" onclick="calculateResult()">=</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="{{ url_for('static', filename='bootstrap.bundle.js') }}"></script>
+    <!-- Custom JS -->
+    <script>
+        function appendToDisplay(value) {
+            document.getElementById('display').value += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function calculateResult() {
+            try {
+                let result = eval(document.getElementById('display').value);
+                document.getElementById('display').value = result;
+            } catch {
+                document.getElementById('display').value = 'Error';
+            }
+        }
+    </script>
+
+</body>
+</html>

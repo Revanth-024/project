@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        .container {
+            max-width: 500px;
+            margin: auto;
+            text-align: center;
+            padding: 50px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+            color: #333;
+        }
+
+        select, button {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1.1em;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rock Paper Scissors</h1>
+        <form action="{{ url_for('views.rockpaperscissors') }}" method="POST">
+            <label for="choice">Choose your move:</label>
+            <select name="choice" id="choice" required>
+                <option value="rock">Rock</option>
+                <option value="paper">Paper</option>
+                <option value="scissors">Scissors</option>
+            </select>
+            <button type="submit">Play</button>
+        </form>
+
+        {% if result %}
+        <div class="result">
+            <p>You chose: {{ user_choice }}</p>
+            <p>Computer chose: {{ computer_choice }}</p>
+            <p>Result: {{ result }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

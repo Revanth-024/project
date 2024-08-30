@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Tic Tac Toe{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1 class="mb-4">Tic Tac Toe</h1>
+    <div id="game" class="mx-auto">
+        <div class="row">
+            <button class="cell col-4" id="0"></button>
+            <button class="cell col-4" id="1"></button>
+            <button class="cell col-4" id="2"></button>
+        </div>
+        <div class="row">
+            <button class="cell col-4" id="3"></button>
+            <button class="cell col-4" id="4"></button>
+            <button class="cell col-4" id="5"></button>
+        </div>
+        <div class="row">
+            <button class="cell col-4" id="6"></button>
+            <button class="cell col-4" id="7"></button>
+            <button class="cell col-4" id="8"></button>
+        </div>
+    </div>
+    <div id="status" class="mt-4"></div>
+    <button class="btn btn-primary mt-3" onclick="resetGame()">Reset Game</button>
+</div>
+
+<style>
+    #game {
+        width: 300px;
+        height: 300px;
+    }
+
+    .cell {
+        width: 100px;
+        height: 100px;
+        font-size: 2rem;
+        border: 2px solid #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .row {
+        display: flex;
+    }
+</style>
+
+<script>
+    const cells = document.querySelectorAll('.cell');
+    const statusDisplay = document.getElementById('status');
+    let currentPlayer = 'X';
+    let gameState = ['', '', '', '', '', '', '', '', ''];
+    const winningConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    function handleCellClick(event) {
+        const clickedCell = event.target;
+        const clickedCellIndex = parseInt(clickedCell.id);
+
+        if (gameState[clickedCellIndex] !== '' || !gameActive) {
+            return;
+        }
+
+        gameState[clickedCellIndex] = currentPlayer;
+        clickedCell.innerHTML = currentPlayer;
+        checkForWinner();
+    }
+
+    function checkForWinner() {
+        let roundWon = false;
+        for (let i = 0; i < winningConditions.length; i++) {
+            const winCondition = winningConditions[i];
+            let a = gameState[winCondition[0]];
+            let b = gameState[winCondition[1]];
+            let c = gameState[winCondition[2]];
+            if (a === '' || b === '' || c === '') {
+                continue;
+            }
+            if (a === b && b === c) {
+                roundWon = true;
+                break;
+            }
+        }
+
+        if (roundWon) {
+            statusDisplay.innerHTML = `Player ${currentPlayer} has won!`;
+            gameActive = false;
+            return;
+        }
+
+        let roundDraw = !gameState.includes('');
+        if (roundDraw) {
+            statusDisplay.innerHTML = 'Game ended in a draw!';
+            gameActive = false;
+            return;
+        }
+
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        statusDisplay.innerHTML = `It's ${currentPlayer}'s turn`;
+    }
+
+    function resetGame() {
+        gameActive = true;
+        currentPlayer = 'X';
+        gameState = ['', '', '', '', '', '', '', '', ''];
+        statusDisplay.innerHTML = `It's ${currentPlayer}'s turn`;
+        cells.forEach(cell => cell.innerHTML = '');
+    }
+
+    let gameActive = true;
+    cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    statusDisplay.innerHTML = `It's ${currentPlayer}'s turn`;
+</script>
+{% endblock %}

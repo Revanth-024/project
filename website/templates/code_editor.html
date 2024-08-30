@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Code Editor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Code Editor</h1>
+    <textarea id="code" name="code">
+# Write your code here
+def hello_world():
+    print("Hello, World!")
+    </textarea>
+</div>
+
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        mode: "python",
+        theme: "default",
+    });
+</script>
+{% endblock %}

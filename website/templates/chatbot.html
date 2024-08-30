@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}CEASER{% endblock %}
+
+{%block content%}
+<!-- navbar -->
+<header>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand me-auto">AUN</a>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Welcome</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link mx-lg-2">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/tools" class="nav-link mx-lg-2">Tools</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link mx-lg-2 active" aria-current="page">CEASER</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/music" target="_blank" class="nav-link mx-lg-2">Music</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a href="/logout" class="login-button">Logout</a>
+            <button id="darkModeToggle" class="btn dark-mode-toggle ml-3"><i class="fa-regular fa-sun"></i></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</header>
+<!-- navbar end -->
+
+<!-- main -->
+<main>
+    <div class="container d-flex align-items-center flex-column" style="height: 90vh;">
+        <p class="h1">CEASER</p>
+        <div class="chat-container"></div>
+        <div class="input-group mb-0">
+            <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <input type="text" id="user-message" class="form-control">
+            <button id="send-button" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+</main>
+<script>
+    sendButton.addEventListener('click', sendMessage);
+
+    // Sample dictionary of correct words
+    const dictionary = ["hello", "hi", "how", "are", "you", "what", "is", "your", "name", "bye", "thank", "you", "thanks"];
+
+    // Function to check and correct spelling
+    function spellCheck(input) {
+        const words = input.split(' ');
+        const correctedWords = words.map(word => {
+            if (dictionary.includes(word.toLowerCase())) {
+                return word;
+            } else {
+                // Find the closest match in the dictionary
+                let closestMatch = word;
+                let minDistance = Infinity;
+                dictionary.forEach(dictWord => {
+                    const distance = levenshteinDistance(word.toLowerCase(), dictWord);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestMatch = dictWord;
+                    }
+                });
+                return closestMatch;
+            }
+        });
+        return correctedWords.join(' ');
+    }
+
+    // Levenshtein Distance function to calculate the difference between two words
+    function levenshteinDistance(a, b) {
+        const matrix = [];
+        for (let i = 0; i <= b.length; i++) {
+            matrix[i] = [i];
+        }
+        for (let j = 0; j <= a.length; j++) {
+            matrix[0][j] = j;
+        }
+        for (let i = 1; i <= b.length; i++) {
+            for (let j = 1; j <= a.length; j++) {
+                if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1, // substitution
+                        Math.min(matrix[i][j - 1] + 1, // insertion
+                            matrix[i - 1][j] + 1) // deletion
+                    );
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    }
+
+    function sendMessage() {
+        const userMessage = userMessageInput.value;
+        if (userMessage.trim() !== '') {
+            // Add user message to chat container
+            const chatContainer = document.querySelector('.chat-container');
+            const userMessageElement = document.createElement('div');
+            userMessageElement.classList.add('message', 'user-message');
+            userMessageElement.innerHTML = `<div class="message-content">${userMessage}</div>`;
+            chatContainer.appendChild(userMessageElement);
+
+            // Clear input field
+            userMessageInput.value = '';
+
+            // Scroll to the bottom of the chat container
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Process user message with compromise
+            const doc = nlp(userMessage.toLowerCase());
+            const normalizedMessage = doc.out('text');
+
+            // Spell check the normalized message
+            const correctedMessage = spellCheck(normalizedMessage);
+
+            // Generate bot response
+            const botResponse = `Did you mean: ${correctedMessage}?`;
+            const botMessageElement = document.createElement('div');
+            botMessageElement.classList.add('message', 'bot-message');
+            botMessageElement.innerHTML = `<div class="message-content">${botResponse}</div>`;
+            chatContainer.appendChild(botMessageElement);
+
+            // Scroll to the bottom of the chat container
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }
+</script>
+
+<script src="js/bootstrap.bundle.js"></script>
+<script src="https://unpkg.com/compromise"></script>
+<script>
+    const responses = {
+        "hello": "Hello there!, How can I assist you today?",
+        "hi": "Hi! How can I assist you today?",
+        "hey": "Hey! What's up?",
+        "how are you": "I'm just a bot, but I'm here to help you!",
+        "what's your name": "I'm CEASER, your friendly AI chatbot.",
+        "what is your name": "I'm CEASER, your friendly AI chatbot.",
+        "whats your name": "I'm CEASER, your friendly AI chatbot.",
+        "who are you": "I'm CEASER, your friendly AI chatbot.",
+        "bye": "Goodbye! Have a great day!",
+        "thank you": "You're welcome!",
+        "thanks": "No problem!",
+        "what can you do": "I can chat with you, answer your questions, and help you with various tasks.",
+        "what do you do": "I can chat with you, answer your questions, and help you with various tasks.",
+        "tell me a joke": "Why don't scientists trust atoms? Because they make up everything!",
+        "what's the weather like": "I'm not sure, but you can check a weather website for the latest updates.",
+        "who created you": "I was created by a team of developers to assist you.",
+        "what's your favorite color": "I don't have preferences, but I think blue is quite calming.",
+        "what's your purpose": "My purpose is to assist and provide information to users like you.",
+        "how old are you": "I'm as old as the code that created me!",
+        "where are you from": "I'm from the digital world, created by developers.",
+        "what's your favorite food": "I don't eat, but I hear pizza is quite popular!",
+        "can you help me": "Of course! What do you need help with?",
+        "what's the time": "I'm not sure, but you can check your device's clock.",
+        "do you like music": "I don't have preferences, but I can help you find some music!",
+        "what's your favorite movie": "I don't watch movies, but I hear 'Inception' is quite good.",
+        "do you have any hobbies": "I enjoy helping users and learning new things!",
+        "what's your favorite book": "I don't read books, but I can help you find one to read!",
+        "do you have friends": "I interact with many users, so I guess you could say I have many friends!",
+        "what's your favorite sport": "I don't play sports, but I can help you find information about them!",
+        "can you tell me a story": "Once upon a time, there was a chatbot named CEASER who loved helping people...",
+        "what's your favorite animal": "I don't have preferences, but I think cats are quite interesting!",
+        "do you have a family": "I don't have a family, but I have many users who interact with me!",
+        "what's your favorite game": "I don't play games, but I can help you find one to play!",
+        "can you sing": "I can't sing, but I can help you find some music to listen to!",
+        "can you dance": "I can't dance, but I can help you find some dance videos!",
+        "what's your favorite place": "I don't travel, but I hear the beach is quite relaxing!",
+        "do you like art": "I don't have preferences, but I can help you find some art to look at!",
+        "what's your favorite season": "I don't experience seasons, but I hear spring is quite beautiful!",
+        "can you cook": "I can't cook, but I can help you find some recipes!",
+        "do you like to travel": "I don't travel, but I can help you find travel information!",
+        "what's your favorite holiday": "I don't celebrate holidays, but I hear Christmas is quite festive!",
+        "can you help me with my homework": "Sure! What subject do you need help with?",
+        "do you like reading": "I don't read, but I can help you find something to read!",
+        "what's your favorite song": "I don't listen to music, but I can help you find some songs!",
+        "can you tell me a fun fact": "Did you know that honey never spoils? Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still edible!"
+    };
+
+    const userMessageInput = document.getElementById('user-message');
+    const sendButton = document.getElementById('send-button');
+
+    userMessageInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    sendButton.addEventListener('click', sendMessage);
+
+    function sendMessage() {
+        const userMessage = userMessageInput.value;
+        if (userMessage.trim() !== '') {
+            // Add user message to chat container
+            const chatContainer = document.querySelector('.chat-container');
+            const userMessageElement = document.createElement('div');
+            userMessageElement.classList.add('message', 'user-message');
+            userMessageElement.innerHTML = `<div class="message-content">${userMessage}</div>`;
+            chatContainer.appendChild(userMessageElement);
+
+            // Clear input field
+            userMessageInput.value = '';
+
+            // Scroll to the bottom of the chat container
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Process user message with compromise
+            const doc = nlp(userMessage.toLowerCase());
+            const normalizedMessage = doc.out('text');
+
+            // Generate bot response
+            const botResponse = responses[normalizedMessage] || "I'm not sure how to respond to that.";
+            const botMessageElement = document.createElement('div');
+            botMessageElement.classList.add('message', 'bot-message');
+            botMessageElement.innerHTML = `<div class="message-content">${botResponse}</div>`;
+            chatContainer.appendChild(botMessageElement);
+
+            // Scroll to the bottom of the chat container
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }
+</script>
+{% endblock %}

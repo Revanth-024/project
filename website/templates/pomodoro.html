@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .timer {
+            font-size: 5em;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:active {
+            background-color: #ddd;
+        }
+
+        #status {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pomodoro Timer</h1>
+        <div id="timer" class="timer">25:00</div>
+        <div class="controls">
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div id="status" class="status">Work Time</div>
+    </div>
+
+    <script>
+        let timer;
+        let isRunning = false;
+        let isWorkTime = true;
+        let workDuration = 25 * 60; // 25 minutes
+        let breakDuration = 5 * 60; // 5 minutes
+        let currentTime = workDuration;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimer() {
+            document.getElementById('timer').textContent = formatTime(currentTime);
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            timer = setInterval(() => {
+                currentTime--;
+                updateTimer();
+                if (currentTime <= 0) {
+                    clearInterval(timer);
+                    isRunning = false;
+                    isWorkTime = !isWorkTime;
+                    if (isWorkTime) {
+                        currentTime = workDuration;
+                        document.getElementById('status').textContent = 'Work Time';
+                    } else {
+                        currentTime = breakDuration;
+                        document.getElementById('status').textContent = 'Break Time';
+                    }
+                    startTimer();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            stopTimer();
+            currentTime = isWorkTime ? workDuration : breakDuration;
+            updateTimer();
+            document.getElementById('status').textContent = isWorkTime ? 'Work Time' : 'Break Time';
+        }
+
+        document.getElementById('start').addEventListener('click', startTimer);
+        document.getElementById('stop').addEventListener('click', stopTimer);
+        document.getElementById('reset').addEventListener('click', resetTimer);
+
+        updateTimer();
+    </script>
+</body>
+</html>

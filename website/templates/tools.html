@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Tools{% endblock %}
+
+{% block content %}
+    <!-- navbar -->
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a href="/" class="navbar-brand me-auto">AUN</a>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Welcome</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a href="/" class="nav-link mx-lg-2">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link mx-lg-2  active" aria-current="page">Tools</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/chatbot" class="nav-link mx-lg-2">Chatbot</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/music" target="_blank" class="nav-link mx-lg-2">Music</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="/logout" class="login-button">Logout</a>
+                <button id="darkModeToggle" class="btn dark-mode-toggle ml-3"><i class="fa-regular fa-sun"></i></button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <!-- navbar end -->
+
+    <main>
+        <div class="container hifun2 container-fluid">
+            <p class="h1 text-capitalize">Tools</p>
+            <div class="row gy-3 my-3">
+                <!-- Tool 1: To-Do List -->
+                <div class="col-lg-4 col-md-5 col-sm-6 column-gap-md-4 d-flex">
+                    <div class="card card-equal-height" >
+                        <div class="card-body">
+                            <div class="card-title fw-bold">To-Do List</div>
+                            <div class="card-text">Manage your tasks efficiently with our To-Do List tool. You can add, edit, and delete tasks.</div>
+                        </div>
+                        <div class="pb-3 ps-3">
+                            <a href="{{ url_for('views.todolist') }}" class="btn btn-primary col-3">Use</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tool 2: Calculator -->
+                <div class="col-lg-4 col-md-5 col-sm-6 column-gap-md-4 d-flex">
+                    <div class="card card-equal-height" >
+                        <div class="card-body">
+                            <div class="card-title fw-bold">Calculator</div>
+                            <div class="card-text">Perform basic arithmetic operations with this simple calculator.</div>
+                        </div>
+                        <div class="pb-3 ps-3">
+                            <a href="{{ url_for('views.calculator') }}" class="btn btn-primary col-3">Use</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tool 3: Chatbot -->
+                <div class="col-lg-4 col-md-5 col-sm-6 column-gap-md-4 d-flex">
+                    <div class="card card-equal-height" >
+                        <div class="card-body">
+                            <div class="card-title fw-bold">Chatbot</div>
+                            <div class="card-text">Interact with our chatbot for automated responses and assistance.</div>
+                        </div>
+                        <div class="pb-3 ps-3">
+                            <a href="{{ url_for('views.chatbot') }}" class="btn btn-primary col-3">Use</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tool 4: Music -->
+                <div class="col-lg-4 col-md-5 col-sm-6 column-gap-md-4 d-flex">
+                    <div class="card card-equal-height" >
+                        <div class="card-body">
+                            <div class="card-title fw-bold">Music</div>
+                            <div class="card-text">Explore and listen to music with this tool. Access various music tracks and playlists.</div>
+                        </div>
+                        <div class="pb-3 ps-3">
+                            <a href="{{ url_for('views.music') }}" class="btn btn-primary col-3">Use</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 col-sm-6 column-gap-md-4 d-flex">
+                    <div class="card card-equal-height" >
+                        <div class="card-body">
+                            <div class="card-title fw-bold">Pomodoro Timer</div>
+                            <div class="card-text">Stay productive with our Pomodoro Timer. Work for 25 minutes, then take a 5-minute break.</div>
+                        </div>
+                        <div class="pb-3 ps-3">
+                            <a href="{{ url_for('views.pomodoro') }}" class="btn btn-primary col-3">Use</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 col-sm-6 column-gap-md-4">
+                    <div class="card" style=" height: 100%;">
+                        <div class="card-body">
+                            <div class="card-title fw-bold">Code Editor</div>
+                            <div class="card-text">A simple code editor with syntax highlighting.</div>
+                        </div>
+                        <div class="pb-3 ps-3">
+                            <a href="{{ url_for('views.code_editor') }}" class="btn btn-primary col-3">Use</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 col-sm-6 column-gap-md-4">
+                    <div class="card" style=" height: 100%;">
+                        <div class="card-body">
+                            <div class="card-title fw-bold">Dictionary</div>
+                            <div class="card-text">Look up the meaning of any word.</div>
+                        </div>
+                        <div class="pb-3 ps-3">
+                            <a href="{{ url_for('views.dictionary') }}" class="btn btn-primary col-3">Use</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 col-sm-6 column-gap-md-4">
+                    <div class="card" style=" height: 100%;">
+                        <div class="card-body">
+                            <div class="card-title fw-bold">Tic Tac Toe</div>
+                            <div class="card-text">Play a game of Tic Tac Toe against yourself.</div>
+                        </div>
+                        <div class="pb-3 ps-3">
+                            <a href="{{ url_for('views.tictactoe') }}" class="btn btn-primary col-3">Play</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

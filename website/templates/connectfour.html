@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Connect Four{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1 class="mb-4">Connect Four</h1>
+    <div id="game-board" class="mx-auto"></div>
+    <div id="status" class="mt-4"></div>
+    <button class="btn btn-primary mt-3" onclick="resetGame()">Reset Game</button>
+</div>
+
+<style>
+    #game-board {
+        display: grid;
+        grid-template-columns: repeat(7, 60px);
+        gap: 5px;
+    }
+
+    .cell {
+        width: 60px;
+        height: 60px;
+        background-color: #ddd;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cell.player1 {
+        background-color: red;
+    }
+
+    .cell.player2 {
+        background-color: yellow;
+    }
+</style>
+
+<script>
+    const columns = 7;
+    const rows = 6;
+    let currentPlayer = 'player1';
+    let gameActive = true;
+    let gameState = Array(rows).fill(null).map(() => Array(columns).fill(null));
+
+    const gameBoard = document.getElementById('game-board');
+    const statusDisplay = document.getElementById('status');
+
+    function createBoard() {
+        gameBoard.innerHTML = '';
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < columns; c++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.dataset.row = r;
+                cell.dataset.column = c;
+                cell.addEventListener('click', handleCellClick);
+                gameBoard.appendChild(cell);
+            }
+        }
+        updateStatus();
+    }
+
+    function handleCellClick(event) {
+        const column = event.target.dataset.column;
+        if (!gameActive) return;
+
+        for (let r = rows - 1; r >= 0; r--) {
+            if (!gameState[r][column]) {
+                gameState[r][column] = currentPlayer;
+                document.querySelector(`[data-row="${r}"][data-column="${column}"]`).classList.add(currentPlayer);
+                if (checkForWinner()) {
+                    statusDisplay.innerHTML = `${currentPlayer} wins!`;
+                    gameActive = false;
+                    return;
+                }
+                currentPlayer = currentPlayer === 'player1' ? 'player2' : 'player1';
+                updateStatus();
+                return;
+            }
+        }
+    }
+
+    function checkForWinner() {
+        // Check horizontal, vertical, and diagonal winning conditions
+        // (Similar to the Tic-Tac-Toe winner check logic, but adjusted for Connect Four)
+    }
+
+    function updateStatus() {
+        statusDisplay.innerHTML = `${currentPlayer}'s turn`;
+    }
+
+    function resetGame() {
+        gameActive = true;
+        currentPlayer = 'player1';
+        gameState = Array(rows).fill(null).map(() => Array(columns).fill(null));
+        createBoard();
+    }
+
+    createBoard();
+</script>
+{% endblock %}

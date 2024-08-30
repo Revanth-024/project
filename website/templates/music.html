@@ -1,0 +1,149 @@
+ {% extends "base.html" %}
+
+{% block title %}music{% endblock %}
+
+{%block content%}
+	<!-- navbar -->
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a href="/" class="navbar-brand me-auto">AUN</a>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLable">Welcome</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a href="/" class="nav-link mx-lg-2">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/tools" class="nav-link mx-lg-2">Tools</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/chatbot" class="nav-link mx-lg-2">Chatbot</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link mx-lg-2 active" aria-current="page">Music</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="/logout" class="login-button">Logout</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigarion">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <!-- navbar end -->
+    <main>
+        <section class="container container-fluid">
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="col-9 p-3 d-flex justify-content-center flex-column align-items-center">
+                    <img src="static/shapofu.PNG" class="song-img mt-5" id="img_song">
+                    <p class="h1 mt-3" id="name_song">Shape of You</p>
+                    <p id="singer_name">Lorem ipsum dolor sit.</p>
+                    <audio id="song">
+                        <source src="static/songs/audio_file_1.mp3" type="audio/mpeg">
+                    </audio>
+                    <input type="range" value="0" id="progress" class="pro_hi">
+                    <div class="music_player container d-flex justify-content-around align-items-centers">
+                        <button class="btn btn-primary" onclick="musicRe()"><i
+                                class="fa-solid fa-backward"></i></button>
+                        <button class="btn btn-primary" onclick="Playpause()"><i class="fa-solid fa-play"
+                                id="ctrlIcon"></i></button>
+                        <button class="btn btn-primary" onclick="changeAudio()"><i
+                                class="fa-solid fa-forward"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        let progress = document.getElementById("progress");
+        let song = document.getElementById("song");
+        let ctrlIcon = document.getElementById("ctrlIcon");
+        let song_name = document.getElementById("name_song");
+        let singer_name = document.getElementById("singer_name");
+        let image = document.getElementById("img_song")
+
+        song.onloadedmetadata = function () {
+            progress.max = song.duration;
+            progress.value = song.currentTime;
+        }
+        function Playpause() {
+            if (ctrlIcon.classList.contains("fa-pause")) {
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            }
+            else {
+                song.play();
+                ctrlIcon.classList.remove("fa-play");
+                ctrlIcon.classList.add("fa-pause");
+            }
+        }
+        if (song.play()) {
+            setInterval(() => {
+                progress.value = song.currentTime;
+            }, 500);
+        }
+        progress.onchange = function () {
+            song.play();
+            song.currentTime = progress.value;
+        }
+        var a = 1;
+        function changeAudio() {
+            if (a == 1) {
+                song.src = 'static/songs/audio_file_1.mp3';
+                a = 2;
+                song_name.innerHTML = "Shape of You";
+                image.src = "static/shapofu.PNG";
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            }
+            else if (a == 2) {
+                song.src = 'static/songs/audio_file_2.mp3';
+                a = 3;
+                song_name.innerHTML = "Beautiful Things";
+                image.src = "static/butifun.PNG";
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            }
+            else if (a == 3) {
+                song.src = 'static/songs/audio_file_3.mp3';
+                a = 1;
+                song_name.innerHTML = "Tujh Mein Rab Dikhta";
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            }
+            audio.load();
+        }
+        function musicRe() {
+            if (a == 1) {
+                song.src = 'static/songs/audio_file_3.mp3';
+                a = 2;
+                song_name.innerHTML = "Tujh Mein Rab Dikhta";
+                image.src = "static/shapofu.PNG";
+            }
+            else if (a == 2) {
+                song.src = 'static/songs/audio_file_1.mp3';
+                a = 3;
+                song_name.innerHTML = "Shape of You";
+                image.src = "static/shapofu.PNG";
+            }
+            else if (a == 3) {
+                song.src = 'static/songs/audio_file_2.mp3';
+                a = 1;
+                song_name.innerHTML = "Tujh Mein Rab Dikhta";
+            }
+        }
+    </script>
+{% endblock %}

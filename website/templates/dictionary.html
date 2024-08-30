@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Dictionary{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Dictionary</h1>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="word" class="form-label">Enter a word:</label>
+            <input type="text" class="form-control" id="word" name="word" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    {% if definition %}
+    <div class="mt-4">
+        <h2>Definition of {{ word }}:</h2>
+        <p>{{ definition }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

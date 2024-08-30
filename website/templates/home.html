@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<header>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand me-auto">AUN</a>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Welcome</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link mx-lg-2 active" aria-current="page">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/tools" class="nav-link mx-lg-2">Tools</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/chatbot" class="nav-link mx-lg-2">Chatbot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/music" target="_blank" class="nav-link mx-lg-2">Music</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a href="/logout" class="login-button">Logout</a>
+            <button id="darkModeToggle" class="btn dark-mode-toggle ml-3"><i class="fa-regular fa-sun"></i></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- End Navbar -->
+
+<!-- Main Section -->
+<main>
+    <!-- Hero Section -->
+    <div class="container hero-section d-flex align-items-center justify-content-center flex-column" id="home">
+        <h2 class="hero_aun">AUN</h2>
+        <h1 class="text-center hifun mt-3 mb-4">
+            <span style="color: #8A4FFF; font-family: serif;">A</span>ny Thing<br> Yo<span style="color: #8A4FFF; font-family: serif;">u</span> <span style="color: #8A4FFF; font-family: serif;">N</span>eed
+        </h1>
+        <p class="text-md-center mb-5 w-50">
+            Explore a suite of innovative tools and resources designed to empower you. Discover new ways to learn, create, and engage.
+        </p>
+        {% if not user.is_authenticated %}
+        <a class="btn btn-primary mt-5" href="/sign-up">Create Account</a>
+        {% endif %}
+        <div class="h1 mt-5">
+            <i class="fa-solid fa-computer-mouse"></i>
+        </div>
+    </div>
+    <!-- End Hero Section -->
+
+    <!-- Tools Section -->
+    <div class="container tools-section d-flex align-items-center justify-content-center flex-column" id="tools">
+        <h2 class="section-title">Our Tools</h2>
+        <p class="section-description mb-5 w-50 text-center">
+            Enhance your productivity with our cutting-edge tools designed to simplify your workflow and maximize efficiency.
+        </p>
+        <div class="row gy-4 my-4">
+            <div class="col-md-3 col-lg-3 col-sm-5">
+                <div class="card shadow-sm tool-card">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <h5 class="card-title">Project Manager</h5>
+                        <p class="card-text text-center">Stay on top of your tasks and manage projects with ease using our intuitive project management tool.</p>
+                        <a href="/project-manager" class="btn btn-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-5">
+                <div class="card shadow-sm tool-card">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <h5 class="card-title">Code Editor</h5>
+                        <p class="card-text text-center">Write, edit, and manage code efficiently with our powerful and customizable code editor.</p>
+                        <a href="/code-editor" class="btn btn-primary">Start Coding</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-5">
+                <div class="card shadow-sm tool-card">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <h5 class="card-title">Chatbot</h5>
+                        <p class="card-text text-center">Interact with our AI-powered chatbot for instant assistance and support around the clock.</p>
+                        <a href="/chatbot" class="btn btn-primary">Chat Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-5">
+                <div class="card shadow-sm tool-card">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <h5 class="card-title">Music Player</h5>
+                        <p class="card-text text-center">Enjoy a seamless music experience with our built-in music player, offering a variety of tracks and playlists.</p>
+                        <a href="/music" target="_blank" class="btn btn-primary">Listen Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Tools Section -->
+    <!-- About Section -->
+<div class="container about-section" id="about">
+    <h2 class="section-title">About Us</h2>
+    <div class="row">
+        <!-- About Text -->
+        <div class="col-md-6 about-text">
+            <p>
+                Our platform is designed to provide you with the tools you need to succeed. Whether you're looking to manage your projects, improve your skills, or simply enjoy some music, we've got you covered.
+            </p>
+        </div>
+        <!-- About Images -->
+        <div class="col-md-6 about-images">
+            <div class="image-wrapper" data-aos="fade-up" data-aos-duration="1000">
+                <img src="static/about1.jpg" alt="About AUN" class="img-fluid rounded">
+            </div>
+            <div class="image-wrapper" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <img src="static/about2.jpg" alt="About AUN" class="img-fluid rounded">
+            </div>
+            <div class="image-wrapper" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                <img src="static/about3.jpg" alt="About AUN" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End About Section -->
+
+
+</main>
+<!-- End Main Section -->
+
+<!-- Footer Section -->
+<footer class="container-fluid">
+    <div class="container footer-content">
+        <div class="row bg-dark mt-5 p-4 footer-info" style="border-top-right-radius: 12px; border-top-left-radius: 12px;">
+            <div class="col-lg-3 col-md-4">
+                <h5 class="text-light">Address</h5>
+                <p class="text-light">1234 Street Name</p>
+                <p class="text-light">City, State, 56789</p>
+            </div>
+            <div class="col-lg-3 col-md-4">
+                <h5 class="text-light">Contact</h5>
+                <p class="text-light">Phone: (123) 456-7890</p>
+                <p class="text-light">Email: info@aun.com</p>
+            </div>
+            <div class="col-lg-3 col-md-4">
+                <h5 class="text-light">Follow Us</h5>
+                <p class="text-light">Stay connected through our social media channels for the latest updates.</p>
+            </div>
+            <div class="col-lg-3 col-md-4">
+                <h5 class="text-light">Feedback</h5>
+                <input type="email" class="input-group mb-3" placeholder="Enter your Email">
+                <textarea name="feedback" class="form-control" placeholder="Your feedback"></textarea>
+                <button type="button" class="btn btn-primary mt-2">Submit</button>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer Section -->
+{% endblock %}
